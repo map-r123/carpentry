@@ -6,13 +6,13 @@ class cabinet:
         self.width=width-30
 
     def bottom(self):
-        return {"name":"bottom", "Edge":"front", "length":f'{self.length-32} mm', "width":f"{self.width} mm", 'groove': True, 'qty': 1}
+        return {"name":"bottom_panel", "Edge":"front", "length":f'{self.length-32} mm', "width":f"{self.width} mm", 'groove': True, 'qty': 1}
 
     def side_panel(self):
         return {"name":"side_panel", "Edge":"front", "length":'780 mm', "width":f"{self.width} mm", 'groove': True, 'qty': 2}
     
-    def clit(self):
-        return {"name":"clit", "Edge":"front", "length":f'{self.length-32} mm', "width":f"80 mm", 'groove': False, 'qty': 2}
+    def cleat(self):
+        return {"name":"cleat", "Edge":"front", "length":f'{self.length-32} mm', "width":f"80 mm", 'groove': False, 'qty': 2}
 
     def backstrip(self):
         return {"name":"backstrip", "length":f'{self.length-32} mm', "width":f"80 mm", 'groove': False, 'qty': 2}
@@ -38,7 +38,7 @@ class cabinet:
     def parts(self):
         return [self.bottom(),
                 self.side_panel(),
-                self.clit(),
+                self.cleat(),
                 self.backstrip(),
                 self.doors(),
                 self.masonite(),
@@ -49,11 +49,31 @@ class wall(cabinet):
         super().__init__(length, width)
 
     def top(self):
-        return {'name':"top", 'Edge': "front", 'length':'f"{self.length-32} mm"', 'width': f"780 mm", 'groove':True, 'qty':1 }
+        return {'name':"top_panel", 'Edge': "front", 'length':f"{self.length-32} mm", 'width': f"780 mm", 'groove':True, 'qty':1 }
+
+    def parts(self):
+        return [self.bottom(),
+                self.top(),
+                self.side_panel(),
+                self.backstrip(),
+                self.doors(),
+                self.masonite(),
+                self.shelf()]
+    #override shelf function for multiple shelfs when wall is taller
+    #better intergrate heigh componet
+    def backstrip(self):
+            return {"name":"backstrip", "length":f'{self.length-32} mm', "width":f"80 mm", 'groove': False, 'qty': 3}
+
+    
 def main():
+    order("bottom(s)")
+    order("wall(s)")
+
+
+def order(type):
     while True:
         try: 
-            no_of_cabinet=int(input("Number of cabinets: "))
+            no_of_cabinet=int(input(f"Number of {type.title()}: "))
             break
         except ValueError:
             print("ERROR! Please enter a number")
@@ -67,7 +87,10 @@ def main():
                 break
             except ValueError:
                 print("ERROR! Please enter a number")
-        project.append(cabinet(length))
+        if type[0]=='b':
+            project.append(cabinet(length))
+        else:
+            project.append(wall(length))
 
     summary = dict()
     # total length of the project, will be used to calculate the kickplace size
@@ -89,7 +112,7 @@ def main():
             summary[key] += part['qty']
 
     for keys, qty in summary.items():
-        name, edge, length, height, groove, port = key
+        name, edge, length, height, groove, port = keys
         #currenty to show output
         print(f'keys: {keys} qty: {qty}')
 
