@@ -3,26 +3,26 @@
 class cabinet:
     def __init__(self,length,width=600):
         self.length = length
-        
+        self.width=width-30
 
     def bottom(self):
-        return {"name":"bottom", "Edge":"front", "length":f'{self.length-32} mm', "heigth":f"600 mm", 'groove': True, 'qty': 1}
+        return {"name":"bottom", "Edge":"front", "length":f'{self.length-32} mm', "width":f"{self.width} mm", 'groove': True, 'qty': 1}
 
     def side_panel(self):
-        return {"name":"side_panel", "Edge":"front", "length":'780 mm', "heigth":f"{self.width} mm", 'groove': True, 'qty': 2}
+        return {"name":"side_panel", "Edge":"front", "length":'780 mm', "width":f"{self.width} mm", 'groove': True, 'qty': 2}
     
     def clit(self):
-        return {"name":"clit", "Edge":"front", "length":f'{self.length-32} mm', "heigth":f"80 mm", 'groove': False, 'qty': 2}
+        return {"name":"clit", "Edge":"front", "length":f'{self.length-32} mm', "width":f"80 mm", 'groove': False, 'qty': 2}
 
     def backstrip(self):
-        return {"name":"backstrip", "length":f'{self.length-32} mm', "heigth":f"80 mm", 'groove': False, 'qty': 2}
+        return {"name":"backstrip", "length":f'{self.length-32} mm', "width":f"80 mm", 'groove': False, 'qty': 2}
 
     # ask about when should there be double doors
     def doors(self):
         if self.length>=600:
-            return {"name":"door", "Edge":"all", "length":f'780 mm', "heigth":f"{self.length/2} mm", 'groove': True, 'qty': 2, "port": True}
+            return {"name":"door", "Edge":"all", "length":f'780 mm', "width":f"{self.length/2} mm", 'groove': True, 'qty': 2, "port": True}
         else:
-            return {"name":"door", "Edge":"all", "length":f'780 mm', "heigth":f"{self.length} mm", 'groove': True, 'qty': 1, 'port': True}
+            return {"name":"door", "Edge":"all", "length":f'780 mm', "width":f"{self.length} mm", 'groove': True, 'qty': 1, 'port': True}
 
     # def base(self, size):
     #     self.size = size
@@ -30,10 +30,10 @@ class cabinet:
     #     {"name":"base", "width":f'{self.size-50} mm', "heigth":f"100 mm", 'groove': False, 'qty': 2}
 
     def masonite(self):
-        return {"name":"masonite", "length":f'{self.length-10} mm', "heigth":f"770 mm", 'groove': False, 'qty': 2}
+        return {"name":"masonite", "length":f'{self.length-10} mm', "width":f"770 mm", 'groove': False, 'qty': 2}
 
     def shelf(self):
-        return {"name":"shelf", "length":f'{self.length-32} mm', "heigth":f"568 mm", 'groove': False, 'qty': 1}
+        return {"name":"shelf", "length":f'{self.length-32} mm', "width":f"{self.width-10} mm", 'groove': False, 'qty': 1}
  
     def parts(self):
         return [self.bottom(),
@@ -49,7 +49,7 @@ class wall(cabinet):
         super().__init__(length, width)
 
     def top(self):
-        return {'name':"top", 'Edge': "front", 'length':'f"{self.length-32} mm"', 'heigth': f"780 mm", 'groove':True, 'qty':1 }
+        return {'name':"top", 'Edge': "front", 'length':'f"{self.length-32} mm"', 'width': f"780 mm", 'groove':True, 'qty':1 }
 def main():
     while True:
         try: 
@@ -80,7 +80,7 @@ def main():
             part["name"],
             part.get("Edge"),
             part["length"],
-            part["heigth"],
+            part["width"],
             part["groove"],
             part.get("port")
             )
