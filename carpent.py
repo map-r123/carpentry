@@ -1,6 +1,7 @@
 # The cabinet class is an object that returns all the componets that make a cabinet excluding the top
 # each function returns a dict with information about that particular panal
 from openpyxl import Workbook
+import time
 
 class cabinet:
     def __init__(self, length, width=600, height=740):
@@ -28,7 +29,7 @@ class cabinet:
     def doors(self):
         # length is how tall the cabinet is and width is how wide it is
         if self.length>=600:
-            return {"name":"door", "Edge":"all", "length":f'{self.height} mm', "width":f"{self.length/2} mm", 'groove': True, 'qty': 2, "port": True}
+            return {"name":"door", "Edge":"all", "length":f'{self.height} mm', "width":f"{self.length//2} mm", 'groove': True, 'qty': 2, "port": True}
         else:
             return {"name":"door", "Edge":"all", "length":f'{self.height} mm', "width":f"{self.length} mm", 'groove': True, 'qty': 1, 'port': True}
 
@@ -140,9 +141,6 @@ def order(type):
         #currenty to show output
         print(f'keys: {keys} qty: {qty}')
 
-if __name__=="__main__":
-    main()
-
 def output(project):
     wb = Workbook()
     ws = wb.active
@@ -153,11 +151,25 @@ def output(project):
     for summary in project:
         for keys, qty in summary.items():
             name, edge, length, width, groove, port=keys
+            # if not groove:
+            #     groove=None
             ws.append([name, edge, length, width, groove, port, qty])
 
-    wb.save("test.xlsx")
+    while True: 
+        try:
+            wb.save("test.xlsx")
+            break
+        except:
+            print("Please close file ", f"Retrying in {time.sleep(10)}")
+
+if __name__=="__main__":
+    main()
+
+
 
 
 # Future addtions:
 # conner unit
 # beauty panel
+# have one varrible to save all parts then create a function to summaries at the end befor output
+# use project name as sheet name
