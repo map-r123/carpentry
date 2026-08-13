@@ -1,5 +1,7 @@
 # The cabinet class is an object that returns all the componets that make a cabinet excluding the top
 # each function returns a dict with information about that particular panal
+from openpyxl import Workbook
+
 class cabinet:
     def __init__(self, length, width=600, height=740):
         self.length = length
@@ -82,8 +84,12 @@ class wall(cabinet):
 
     
 def main():
-    order("bottom(s)")
-    order("wall(s)")
+    #project is a list of dicts. Each dict is a summary of parts for each type
+    project = []
+    project.append(order("bottom(s)"))
+    project.append(order("wall(s)"))
+
+    output(project)
 
 
 def order(type):
@@ -127,6 +133,8 @@ def order(type):
                 summary[key]=0
             summary[key] += part['qty']
 
+    return summary
+    
     for keys, qty in summary.items():
         name, edge, length, width, groove, port = keys
         #currenty to show output
@@ -134,3 +142,22 @@ def order(type):
 
 if __name__=="__main__":
     main()
+
+def output(project):
+    wb = Workbook()
+    ws = wb.active
+
+    #title 
+    ws.append(["Name", "Edge" ,"Length" ,"Width" , "Groove", "Port", "Qty"])
+
+    for summary in project:
+        for keys, qty in summary.items():
+            name, edge, length, width, groove, port=keys
+            ws.append([name, edge, length, width, groove, port, qty])
+
+    wb.save("test.xlsx")
+
+
+# Future addtions:
+# conner unit
+# beauty panel
