@@ -1,39 +1,47 @@
 # The cabinet class is an object that returns all the componets that make a cabinet excluding the top
 # each function returns a dict with information about that particular panal
 class cabinet:
-    def __init__(self,length,width=600):
+    def __init__(self, length, width=600, height=740):
         self.length = length
-        self.width=width-30
+        self.width = width-30
+        self.height = height
 
     def bottom(self):
+        #length is how wide the cabinet is and width is how deep the cabinet is
         return {"name":"bottom_panel", "Edge":"front", "length":f'{self.length-32} mm', "width":f"{self.width} mm", 'groove': True, 'qty': 1}
 
     def side_panel(self):
-        return {"name":"side_panel", "Edge":"front", "length":'780 mm', "width":f"{self.width} mm", 'groove': True, 'qty': 2}
+        # length is how tall the cabinet is and width is how deep the cabinet is
+        return {"name":"side_panel", "Edge":"front", "length":f'{self.height} mm', "width":f"{self.width} mm", 'groove': True, 'qty': 2}
     
     def cleat(self):
+        # length is how wide the cabinet is and width is tall the cleat is
         return {"name":"cleat", "Edge":"front", "length":f'{self.length-32} mm', "width":f"80 mm", 'groove': False, 'qty': 2}
 
     def backstrip(self):
+        # length is how wide the cabinet is and width is tall the backstrip is
         return {"name":"backstrip", "length":f'{self.length-32} mm', "width":f"80 mm", 'groove': False, 'qty': 2}
 
-    # ask about when should there be double doors
+    # ask about when should the cabinet be double doors
     def doors(self):
+        # length is how tall the cabinet is and width is how wide it is
         if self.length>=600:
-            return {"name":"door", "Edge":"all", "length":f'780 mm', "width":f"{self.length/2} mm", 'groove': True, 'qty': 2, "port": True}
+            return {"name":"door", "Edge":"all", "length":f'{self.height} mm', "width":f"{self.length/2} mm", 'groove': True, 'qty': 2, "port": True}
         else:
-            return {"name":"door", "Edge":"all", "length":f'780 mm', "width":f"{self.length} mm", 'groove': True, 'qty': 1, 'port': True}
+            return {"name":"door", "Edge":"all", "length":f'{self.height} mm', "width":f"{self.length} mm", 'groove': True, 'qty': 1, 'port': True}
 
     # def base(self, size):
     #     self.size = size
-    #     return {"name":"base", "width":f'{self.size-50} mm', "heigth":f"100 mm", 'groove': False, 'qty': 2},
-    #     {"name":"base", "width":f'{self.size-50} mm', "heigth":f"100 mm", 'groove': False, 'qty': 2}
+    #     return {"name":"base", "width":f'{self.size-50} mm', "height":f"100 mm", 'groove': False, 'qty': 2},
+    #     {"name":"base", "width":f'{self.size-50} mm', "height":f"100 mm", 'groove': False, 'qty': 2}
 
     def masonite(self):
-        return {"name":"masonite", "length":f'{self.length-10} mm', "width":f"770 mm", 'groove': False, 'qty': 2}
+        # length is how tall the cabinet is and width is how wide the cabinet is
+        return {"name":"masonite", "length":f'{self.length-10} mm', "width":f"{self.height-10} mm", 'groove': False, 'qty': 1}
 
-    def shelf(self):
-        return {"name":"shelf", "length":f'{self.length-32} mm', "width":f"{self.width-10} mm", 'groove': False, 'qty': 1}
+    def shelf(self, qty=1):
+        # length is how wide the cabinet is and width is deep the cabinet is
+        return {"name":"shelf", "length":f'{self.length-32} mm', "width":f"{self.width-10} mm", 'groove': False, 'qty': qty}
  
     def parts(self):
         return [self.bottom(),
@@ -45,11 +53,12 @@ class cabinet:
                 self.shelf()]
 
 class wall(cabinet):
-    def __init__(self, length, width=300):
-        super().__init__(length, width)
+    def __init__(self, length, width=300, height=760):
+        super().__init__(length, width, height)
 
     def top(self):
-        return {'name':"top_panel", 'Edge': "front", 'length':f"{self.length-32} mm", 'width': f"780 mm", 'groove':True, 'qty':1 }
+        # length is how wide the cabinet is and width is how tall the cabinet is
+        return {'name':"top_panel", 'Edge': "front", 'length':f"{self.length-32} mm", 'width': f"{self.height} mm", 'groove':True, 'qty':1 }
 
     def parts(self):
         return [self.bottom(),
@@ -59,9 +68,16 @@ class wall(cabinet):
                 self.doors(),
                 self.masonite(),
                 self.shelf()]
-    #override shelf function for multiple shelfs when wall is taller
-    #better intergrate heigh componet
+    
+    def shelf(self):
+        if self.height<=300:
+            return super().shelf(0)
+        else:
+            qty=int((self.height)/300)
+            return super().shelf(qty)
+        
     def backstrip(self):
+            # length is how wide the cabinet is and width is tall the backstrip is
             return {"name":"backstrip", "length":f'{self.length-32} mm', "width":f"80 mm", 'groove': False, 'qty': 3}
 
     
@@ -112,7 +128,7 @@ def order(type):
             summary[key] += part['qty']
 
     for keys, qty in summary.items():
-        name, edge, length, height, groove, port = keys
+        name, edge, length, width, groove, port = keys
         #currenty to show output
         print(f'keys: {keys} qty: {qty}')
 
