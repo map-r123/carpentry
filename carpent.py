@@ -3,35 +3,79 @@
 from openpyxl import Workbook
 import time
 
+
 class cabinet:
     def __init__(self, length, width=600, height=740):
         self.length = length
-        self.width = width-30
+        self.width = width - 30
         self.height = height
 
     def bottom(self):
-        #length is how wide the cabinet is and width is how deep the cabinet is
-        return {"name":"bottom_panel", "Edge":"front", "length":f'{self.length-32} mm', "width":f"{self.width} mm", 'groove': True, 'qty': 1}
+        # length is how wide the cabinet is and width is how deep the cabinet is
+        return {
+            "name": "bottom_panel",
+            "Edge": "front",
+            "length": f"{self.length-32} mm",
+            "width": f"{self.width} mm",
+            "groove": True,
+            "qty": 1,
+        }
 
     def side_panel(self):
         # length is how tall the cabinet is and width is how deep the cabinet is
-        return {"name":"side_panel", "Edge":"front", "length":f'{self.height} mm', "width":f"{self.width} mm", 'groove': True, 'qty': 2}
-    
+        return {
+            "name": "side_panel",
+            "Edge": "front",
+            "length": f"{self.height} mm",
+            "width": f"{self.width} mm",
+            "groove": True,
+            "qty": 2,
+        }
+
     def cleat(self):
         # length is how wide the cabinet is and width is tall the cleat is
-        return {"name":"cleat", "Edge":"front", "length":f'{self.length-32} mm', "width":f"80 mm", 'groove': False, 'qty': 2}
+        return {
+            "name": "cleat",
+            "Edge": "front",
+            "length": f"{self.length-32} mm",
+            "width": f"80 mm",
+            "groove": False,
+            "qty": 2,
+        }
 
     def backstrip(self):
         # length is how wide the cabinet is and width is tall the backstrip is
-        return {"name":"backstrip", "length":f'{self.length-32} mm', "width":f"80 mm", 'groove': False, 'qty': 2}
+        return {
+            "name": "backstrip",
+            "length": f"{self.length-32} mm",
+            "width": f"80 mm",
+            "groove": False,
+            "qty": 2,
+        }
 
     # ask about when should the cabinet be double doors
     def doors(self):
         # length is how tall the cabinet is and width is how wide it is
-        if self.length>=600:
-            return {"name":"door", "Edge":"all", "length":f'{self.height} mm', "width":f"{self.length//2} mm", 'groove': True, 'qty': 2, "port": True}
+        if self.length >= 600:
+            return {
+                "name": "door",
+                "Edge": "all",
+                "length": f"{self.height} mm",
+                "width": f"{self.length//2} mm",
+                "groove": False,
+                "qty": 2,
+                "port": True,
+            }
         else:
-            return {"name":"door", "Edge":"all", "length":f'{self.height} mm', "width":f"{self.length} mm", 'groove': True, 'qty': 1, 'port': True}
+            return {
+                "name": "door",
+                "Edge": "all",
+                "length": f"{self.height} mm",
+                "width": f"{self.length} mm",
+                "groove": False,
+                "qty": 1,
+                "port": True,
+            }
 
     # def base(self, size):
     #     self.size = size
@@ -40,20 +84,35 @@ class cabinet:
 
     def masonite(self):
         # length is how tall the cabinet is and width is how wide the cabinet is
-        return {"name":"masonite", "length":f'{self.length-10} mm', "width":f"{self.height-10} mm", 'groove': False, 'qty': 1}
+        return {
+            "name": "masonite",
+            "length": f"{self.length-10} mm",
+            "width": f"{self.height-10} mm",
+            "groove": False,
+            "qty": 1,
+        }
 
     def shelf(self, qty=1):
         # length is how wide the cabinet is and width is deep the cabinet is
-        return {"name":"shelf", "length":f'{self.length-32} mm', "width":f"{self.width-10} mm", 'groove': False, 'qty': qty}
- 
+        return {
+            "name": "shelf",
+            "length": f"{self.length-32} mm",
+            "width": f"{self.width-10} mm",
+            "groove": False,
+            "qty": qty,
+        }
+
     def parts(self):
-        return [self.bottom(),
-                self.side_panel(),
-                self.cleat(),
-                self.backstrip(),
-                self.doors(),
-                self.masonite(),
-                self.shelf()]
+        return [
+            self.bottom(),
+            self.side_panel(),
+            self.cleat(),
+            self.backstrip(),
+            self.doors(),
+            self.masonite(),
+            self.shelf(),
+        ]
+
 
 class wall(cabinet):
     def __init__(self, length, width=300, height=760):
@@ -61,111 +120,132 @@ class wall(cabinet):
 
     def top(self):
         # length is how wide the cabinet is and width is how tall the cabinet is
-        return {'name':"top_panel", 'Edge': "front", 'length':f"{self.length-32} mm", 'width': f"{self.height} mm", 'groove':True, 'qty':1 }
+        return {
+            "name": "top_panel",
+            "Edge": "front",
+            "length": f"{self.length-32} mm",
+            "width": f"{self.height} mm",
+            "groove": True,
+            "qty": 1,
+        }
 
     def parts(self):
-        return [self.bottom(),
-                self.top(),
-                self.side_panel(),
-                self.backstrip(),
-                self.doors(),
-                self.masonite(),
-                self.shelf()]
-    
+        return [
+            self.bottom(),
+            self.top(),
+            self.side_panel(),
+            self.backstrip(),
+            self.doors(),
+            self.masonite(),
+            self.shelf(),
+        ]
+
     def shelf(self):
-        if self.height<=300:
+        if self.height <= 300:
             return super().shelf(0)
         else:
-            qty=int((self.height)/300)
+            qty = int((self.height) / 300)
             return super().shelf(qty)
-        
+
     def backstrip(self):
-            # length is how wide the cabinet is and width is tall the backstrip is
-            return {"name":"backstrip", "length":f'{self.length-32} mm', "width":f"80 mm", 'groove': False, 'qty': 3}
+        # length is how wide the cabinet is and width is tall the backstrip is
+        return {
+            "name": "backstrip",
+            "length": f"{self.length-32} mm",
+            "width": f"80 mm",
+            "groove": False,
+            "qty": 3,
+        }
 
-    
+
 def main():
-    #project is a list of dicts. Each dict is a summary of parts for each type
+    # project is a list of dicts. Each dict is a summary of parts for each type
     project = []
-    project.append(order("bottom(s)"))
-    project.append(order("wall(s)"))
+    order(project)
+    summ = summaries(project)
 
-    output(project)
+    output(summ)
 
 
-def order(type):
+def order(project):
     while True:
-        try: 
-            no_of_cabinet=int(input(f"Number of {type.title()}: "))
+        try:
+            no_of_cabinet = int(input(f"Number of total cabinets: "))
             break
         except ValueError:
             print("ERROR! Please enter a number")
 
-    project = []
-
     for _ in range(no_of_cabinet):
         while True:
-            try: 
-                length=int(input("length(mm): "))
+            type = input("Enter type of cabinets (C or W): ").lower()
+            if type in ["c", "w"]:
+                break
+
+        while True:
+            try:
+                length = int(input("length(mm): "))
                 break
             except ValueError:
                 print("ERROR! Please enter a number")
-        if type[0]=='b':
+
+        if type == "c":
             project.append(cabinet(length))
         else:
             project.append(wall(length))
 
+
+def summaries(project):
     summary = dict()
     # total length of the project, will be used to calculate the kickplace size
-    total_lenght =0
+    total_lenght = 0
 
+    # cab is short for cabinet
     for cab in project:
-        total_lenght+=cab.length
+        total_lenght += cab.length
         for part in cab.parts():
             key = (
-            part["name"],
-            part.get("Edge"),
-            part["length"],
-            part["width"],
-            part["groove"],
-            part.get("port")
+                part["name"],
+                part.get("Edge"),
+                part["length"],
+                part["width"],
+                part["groove"],
+                part.get("port"),
             )
             if key not in summary:
-                summary[key]=0
-            summary[key] += part['qty']
+                summary[key] = 0
+            summary[key] += part["qty"]
 
     return summary
-    
+
     for keys, qty in summary.items():
         name, edge, length, width, groove, port = keys
-        #currenty to show output
-        print(f'keys: {keys} qty: {qty}')
+        # currenty to show output
+        print(f"keys: {keys} qty: {qty}")
 
-def output(project):
+
+def output(summary):
     wb = Workbook()
     ws = wb.active
 
-    #title 
-    ws.append(["Name", "Edge" ,"Length" ,"Width" , "Groove", "Port", "Qty"])
+    # title
+    ws.append(["Name", "Edge", "Length", "Width", "Groove", "Port", "Qty"])
 
-    for summary in project:
-        for keys, qty in summary.items():
-            name, edge, length, width, groove, port=keys
-            # if not groove:
-            #     groove=None
-            ws.append([name, edge, length, width, groove, port, qty])
+    for keys, qty in summary.items():
+        name, edge, length, width, groove, port = keys
+        if not groove:
+            groove = None
+        ws.append([name, edge, length, width, groove, port, qty])
 
-    while True: 
+    while True:
         try:
             wb.save("test.xlsx")
             break
         except:
             print("Please close file ", f"Retrying in {time.sleep(10)}")
 
-if __name__=="__main__":
+
+if __name__ == "__main__":
     main()
-
-
 
 
 # Future addtions:
