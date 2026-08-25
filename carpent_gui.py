@@ -28,11 +28,12 @@ entry_len = ttk.Entry(input_frame,textvariable=length)
 entry_len.grid(column=1,row=1)
 
 btn_add = ttk.Button(input_frame, text= "Add", command= addcab)
-btn_add.grid(column=2,row=3)
+btn_add.grid(column=1,row=3)
 
 root.mainloop()
 
 
+# concept created by Claude
 # ┌──────────────────────────────────────────────┐
 # │              Cabinet Project                 │
 # ├──────────────────────────────────────────────┤
