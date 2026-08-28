@@ -4,7 +4,7 @@ from openpyxl import Workbook
 import time
 
 
-class cabinet:
+class Cabinet:
     def __init__(self, length, width=600, height=740):
         self.length = length
         self.width = width - 30
@@ -56,26 +56,20 @@ class cabinet:
     # ask about when should the cabinet be double doors
     def doors(self):
         # length is how tall the cabinet is and width is how wide it is
-        if self.length >= 600:
-            return {
-                "name": "door",
-                "Edge": "all",
-                "length": f"{self.height} mm",
-                "width": f"{self.length//2} mm",
-                "groove": False,
-                "qty": 2,
-                "port": True,
-            }
+        if self.length <= 550:
+            door_size = self.length
         else:
-            return {
-                "name": "door",
-                "Edge": "all",
-                "length": f"{self.height} mm",
-                "width": f"{self.length} mm",
-                "groove": False,
-                "qty": 1,
-                "port": True,
-            }
+            door_size = (self.length-3)/2
+        
+        return {
+            "name": "door",
+            "Edge": "all",
+            "length": f"{self.height} mm",
+            "width": f"{door_size} mm",
+            "groove": False,
+            "qty": 1,
+            "port": True,
+        }
 
     # def base(self, size):
     #     self.size = size
@@ -96,6 +90,7 @@ class cabinet:
         # length is how wide the cabinet is and width is deep the cabinet is
         return {
             "name": "shelf",
+            "Edge": "front",
             "length": f"{self.length-32} mm",
             "width": f"{self.width-10} mm",
             "groove": False,
@@ -114,7 +109,7 @@ class cabinet:
         ]
 
 
-class wall(cabinet):
+class Wall(Cabinet):
     def __init__(self, length, width=300, height=760):
         super().__init__(length, width, height)
 
@@ -161,10 +156,9 @@ class wall(cabinet):
 def main():
     # project is a list of dicts. Each dict is a summary of parts for each type
     project = []
-    order(project)
-    summ = summaries(project)
 
-    output(summ)
+    order(project)
+    output(project)
 
 
 def order(project):
@@ -175,10 +169,11 @@ def order(project):
         except ValueError:
             print("ERROR! Please enter a number")
 
+
     for _ in range(no_of_cabinet):
         while True:
-            type = input("Enter type of cabinets (C or W): ").lower()
-            if type in ["c", "w"]:
+            type=input("Enter type of cabinets (C or W): ").lower()
+            if type in ["c","w"]:
                 break
 
         while True:
@@ -187,15 +182,21 @@ def order(project):
                 break
             except ValueError:
                 print("ERROR! Please enter a number")
-
+        
         if type == "c":
-            project.append(cabinet(length))
+            project.append(Cabinet(length))
         else:
-            project.append(wall(length))
+            project.append(Wall(length))
 
+def gui_order(project, type, length):
+    if type == "Bottom":
+        project.append(Cabinet(length))
+    elif type == "Wall":
+        project.append(Wall(length))
 
 def summaries(project):
     summary = dict()
+
     # total length of the project, will be used to calculate the kickplace size
     total_lenght = 0
 
@@ -217,15 +218,12 @@ def summaries(project):
 
     return summary
 
-    for keys, qty in summary.items():
-        name, edge, length, width, groove, port = keys
-        # currenty to show output
-        print(f"keys: {keys} qty: {qty}")
 
-
-def output(summary):
+def output(project):
     wb = Workbook()
     ws = wb.active
+
+    summary = summaries(project)
 
     # title
     ws.append(["Name", "Edge", "Length", "Width", "Groove", "Port", "Qty"])
@@ -241,7 +239,10 @@ def output(summary):
             wb.save("test.xlsx")
             break
         except:
-            print("Please close file ", f"Retrying in {time.sleep(10)}")
+            print("Please close file ")
+            for i in range(10,0,-1):
+                print(f"Retrying in {i}")
+                time.sleep(1)
 
 
 if __name__ == "__main__":
