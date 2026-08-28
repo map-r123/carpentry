@@ -2,8 +2,14 @@ import tkinter
 from tkinter import ttk
 from tkinter import StringVar
 
-def addcab():
-    print("test")
+def btn_add_clicked():
+    ...
+
+def btn_remove_clicked():
+    ...
+
+def btn_create_clicked():
+    ...
 
 
 root = tkinter.Tk()
@@ -27,8 +33,22 @@ length = StringVar()
 entry_len = ttk.Entry(input_frame,textvariable=length)
 entry_len.grid(column=1,row=1)
 
-btn_add = ttk.Button(input_frame, text= "Add", command= addcab)
+btn_add = ttk.Button(input_frame, text= "Add", command= btn_add_clicked)
 btn_add.grid(column=1,row=3)
+
+show_frame = ttk.Frame(main_frame,padding=(3, 3, 12, 12))
+show_frame.grid(column=0,row=1)
+
+tree = ttk.Treeview(show_frame,height = 5, columns= ["type","length"])
+tree.grid(column=0,row=0)
+tree.heading("type", text="Type")
+tree.heading("length", text="Length")
+
+btn_remove = ttk.Button(show_frame, text= "Remove",command=btn_remove_clicked)
+btn_remove.grid(column=0,row=1)
+
+btn_create = ttk.Button(main_frame, text= "Create Excel", command= btn_create_clicked)
+btn_create.grid(column=0,row=2)
 
 root.mainloop()
 
