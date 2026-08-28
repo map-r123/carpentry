@@ -1,7 +1,8 @@
-import tkinter
+import tkinter 
 from tkinter import messagebox
 from tkinter import ttk
 from tkinter import StringVar
+from tkinter import simpledialog
 import carpent
 
 def btn_add_clicked():
@@ -13,17 +14,27 @@ def btn_add_clicked():
         return
 
     if add_length>99:
-        carpent.gui_order(project, add_type, add_length)
-        length.set("")
-        print(len(add_type))
+        # Check if type is empty
+        if len(add_type)>0:
+            carpent.gui_order(project, add_type, add_length)
+            length.set("")
+            
+        else:
+            messagebox.showerror("Info", "Please select type")
+            return
+
     else:
         messagebox.showerror("Info", "Can not be less than 99 mm")
+        return
 
 def btn_remove_clicked():
     ...
 
 def btn_create_clicked():
-    ...
+    project_name = simpledialog.askstring("Project Name", "Enter Project Name")
+    if messagebox.askquestion("Project Confermation",f"Do you want to create project named: {project_name}"):
+        if carpent.gui_output(project, project_name) == False:
+            messagebox.showerror("Error", "Error while creating file\n File my be openned by another app!")
 
 
 root = tkinter.Tk()
@@ -63,7 +74,7 @@ tree.heading("type", text="Type")
 tree.heading("length", text="Length")
 
 btn_remove = ttk.Button(show_frame, text= "Remove",command=btn_remove_clicked)
-btn_remove.grid(column=0,row=1)
+# btn_remove.grid(column=0,row=1)
 
 btn_create = ttk.Button(main_frame, text= "Create Excel", command= btn_create_clicked)
 btn_create.grid(column=0,row=2)

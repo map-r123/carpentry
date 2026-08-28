@@ -244,6 +244,26 @@ def output(project):
                 print(f"Retrying in {i}")
                 time.sleep(1)
 
+def gui_output(project, project_name):
+    wb = Workbook()
+    ws = wb.active
+
+    summary = summaries(project)
+
+    # title
+    ws.append(["Name", "Edge", "Length", "Width", "Groove", "Port", "Qty"])
+
+    for keys, qty in summary.items():
+        name, edge, length, width, groove, port = keys
+        if not groove:
+            groove = None
+        ws.append([name, edge, length, width, groove, port, qty])
+
+    try:
+        wb.save(f"{project_name}.xlsx")
+        return True
+    except:
+        return False
 
 if __name__ == "__main__":
     main()
