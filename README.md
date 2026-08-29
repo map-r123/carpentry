@@ -1,6 +1,3 @@
-# carpentry
-A script to help with the creation of a cutting list
-
 # Carpentry Cutting List Generator
 
 A Python tool for generating cutting lists for kitchen cabinets. Define your cabinets by type and length, and the tool calculates all the individual panel dimensions needed (sides, bottoms, tops, doors, shelves, etc.) and exports them to an Excel spreadsheet ready for the workshop.
