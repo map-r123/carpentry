@@ -171,8 +171,8 @@ def order(project):
 
     for _ in range(no_of_cabinet):
         while True:
-            type = input("Enter type of cabinets (C or W): ").lower()
-            if type in ["c", "w"]:
+            type = input("Enter type of cabinets (B or W): ").lower()
+            if type in ["b", "w"]:
                 break
 
         while True:
@@ -237,7 +237,7 @@ def output(project):
 
     while True:
         try:
-            wb.save("test.xlsx")
+            wb.save("project.xlsx")
             break
         except:
             print("Please close file ")
