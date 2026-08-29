@@ -5,32 +5,47 @@ from tkinter import StringVar
 from tkinter import simpledialog
 import carpent
 
+
 def btn_add_clicked():
     add_type = cab_type.get()
+    if len(add_type) == 0:
+        messagebox.showerror("Info", "Please select type")
+        return
+    
     try:
         add_length = int(length.get())
     except ValueError:
         messagebox.showerror("Error", "Please input number into length!")
         return
 
-    if add_length>99:
-        # Check if type is empty
-        if len(add_type)>0:
-            carpent.gui_order(project, add_type, add_length)
-            length.set("")
-            
-        else:
-            messagebox.showerror("Info", "Please select type")
-            return
-
-    else:
+    if add_length<99:
         messagebox.showerror("Info", "Can not be less than 99 mm")
         return
 
+
+    carpent.gui_order(project, add_type, add_length)
+    length.set("")
+
+    item_id = tree.insert("",'end',text="", values=[add_type, add_length])
+
+    #project_list is a dict usind the itemid as the key
+    # and the actual cabinet is inserted
+    project_list[item_id] = project[-1]
+
 def btn_remove_clicked():
-    ...
+    selected_item = tree.selection()
+
+    for item_id in selected_item:
+        cabinet= project_list[item_id]
+
+        del project_list[item_id]
+        project.remove(cabinet)
+        tree.delete(item_id)
+
 
 def btn_create_clicked():
+    if len(project)<1:
+        return
     project_name = simpledialog.askstring("Project Name", "Enter Project Name")
     if messagebox.askquestion("Project Confermation",f"Do you want to create project named: {project_name}"):
         if carpent.gui_output(project, project_name) == False:
@@ -41,6 +56,7 @@ root = tkinter.Tk()
 root.title("CUTTING LIST GENERATOR")
 
 project = list()
+project_list = dict()
 
 main_frame = ttk.Frame(root, padding=(3, 3, 12, 12))
 main_frame.grid(column=0,row=0)
@@ -68,17 +84,20 @@ btn_add.grid(column=1,row=3)
 show_frame = ttk.Frame(main_frame,padding=(3, 3, 12, 12))
 show_frame.grid(column=0,row=1)
 
-tree = ttk.Treeview(show_frame,height = 5, columns= ["type","length"])
+tree = ttk.Treeview(show_frame, height = 5, columns= ["type","length"], show="headings")
 tree.grid(column=0,row=0)
 tree.heading("type", text="Type")
 tree.heading("length", text="Length")
+tree.column("type", anchor='center')
+tree.column("length", anchor= 'center')
 
 btn_remove = ttk.Button(show_frame, text= "Remove",command=btn_remove_clicked)
-# btn_remove.grid(column=0,row=1)
+btn_remove.grid(column=0,row=1)
 
 btn_create = ttk.Button(main_frame, text= "Create Excel", command= btn_create_clicked)
 btn_create.grid(column=0,row=2)
 
+root.resizable(False,False)
 root.mainloop()
 
 

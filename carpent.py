@@ -272,5 +272,4 @@ if __name__ == "__main__":
 # Future addtions:
 # conner unit
 # beauty panel
-# have one varrible to save all parts then create a function to summaries at the end befor output
-# use project name as sheet name
+# wardrobe 
