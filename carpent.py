@@ -59,8 +59,8 @@ class Cabinet:
         if self.length <= 550:
             door_size = self.length
         else:
-            door_size = (self.length-3)/2
-        
+            door_size = (self.length - 3) / 2
+
         return {
             "name": "door",
             "Edge": "all",
@@ -169,11 +169,10 @@ def order(project):
         except ValueError:
             print("ERROR! Please enter a number")
 
-
     for _ in range(no_of_cabinet):
         while True:
-            type=input("Enter type of cabinets (C or W): ").lower()
-            if type in ["c","w"]:
+            type = input("Enter type of cabinets (C or W): ").lower()
+            if type in ["c", "w"]:
                 break
 
         while True:
@@ -182,17 +181,19 @@ def order(project):
                 break
             except ValueError:
                 print("ERROR! Please enter a number")
-        
+
         if type == "c":
             project.append(Cabinet(length))
         else:
             project.append(Wall(length))
+
 
 def gui_order(project, type, length):
     if type == "Bottom":
         project.append(Cabinet(length))
     elif type == "Wall":
         project.append(Wall(length))
+
 
 def summaries(project):
     summary = dict()
@@ -240,9 +241,10 @@ def output(project):
             break
         except:
             print("Please close file ")
-            for i in range(10,0,-1):
+            for i in range(10, 0, -1):
                 print(f"Retrying in {i}")
                 time.sleep(1)
+
 
 def gui_output(project, project_name):
     wb = Workbook()
@@ -265,6 +267,7 @@ def gui_output(project, project_name):
     except:
         return False
 
+
 if __name__ == "__main__":
     main()
 
@@ -272,4 +275,4 @@ if __name__ == "__main__":
 # Future addtions:
 # conner unit
 # beauty panel
-# wardrobe 
+# wardrobe
