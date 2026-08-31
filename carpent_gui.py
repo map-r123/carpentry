@@ -96,6 +96,10 @@ tree.heading("length", text="Length")
 tree.column("type", anchor="center")
 tree.column("length", anchor="center")
 
+tree_scrollbar = ttk.Scrollbar(show_frame,orient='vertical', command=tree.yview)
+tree.configure(yscrollcommand=tree_scrollbar.set)
+tree_scrollbar.grid(column=1,row=0, sticky= ('n','s'))
+
 btn_remove = ttk.Button(show_frame, text="Remove", command=btn_remove_clicked)
 btn_remove.grid(column=0, row=1)
 
